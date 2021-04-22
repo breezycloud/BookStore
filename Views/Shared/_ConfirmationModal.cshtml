@@ -1,0 +1,23 @@
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalTitle">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          Do you wish to return this book?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form asp-controller="Bookings" asp-action="ReturnBook" method="POST">
+            @* <input type="hidden" asp-for="Id" /> *@
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index">Back to List</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

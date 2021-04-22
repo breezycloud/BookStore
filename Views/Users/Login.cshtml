@@ -1,0 +1,47 @@
+@model BookStore.ViewModel.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="text-center">
+    <h1>Login</h2>
+    <h4>Enter your login credentials</h1>
+</div>
+
+
+<div>
+    @using (Html.BeginForm("Login", "Users"))
+    {
+        <div style="color:red;">@Html.ValidationSummary()</div>
+        <div class="text-center">
+        <div class="row">
+            <div class="card col-sm-4 mx-auto" style="width: 15rem;">            
+                <div class="card-body">                
+                    <div class="row">
+                        <div class="col-lg-12">@Html.LabelFor(e => e.Email)</div>
+                        <div class="col-lg-12">@Html.TextBoxFor(e => e.Email, new {@class ="form-control"})</div>                    
+                    </div><br/>
+                    <div class="row">
+                        <div class="col-lg-12">@Html.LabelFor(e => e.PasswordHash)</div>
+                        <div class="col-lg-12">@Html.TextBoxFor(e => e.PasswordHash, new {@class ="form-control", Type = "Password"})</div>                    
+                    </div><br/>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <input type="submit" value="Login" class="btn btn-primary" />                            
+                        </div>                        
+                        <div class="col-md-5">
+                            <a class="nav-link text" asp-area="" asp-controller="Users" asp-action="Register">Register</a>
+                        </div>
+                    </div>     
+                    
+                </div>            
+            </div>
+        </div>
+        <div class="row">
+            <!--Show details are saved successfully message-->
+            <div class="col-lg-12">@ViewBag.Message</div>
+        </div><br />
+    </div>
+    }
+</div>

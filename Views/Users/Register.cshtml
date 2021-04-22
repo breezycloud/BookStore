@@ -1,0 +1,61 @@
+@model BookStore.ViewModel.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h2>
+<h5>Fill in the blank space</h5>
+
+<div>
+    @using (Html.BeginForm("RegisterUser", "Users"))
+    {
+        <div style="color:red;">@Html.ValidationSummary()</div>
+            <div class="card">                            
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div>@Html.LabelFor(e => e.FirstName)</div>
+                                <div>@Html.TextBoxFor(e => e.FirstName, new {@class ="form-control"})</div>                    
+                            </div>
+                            <div class="col">
+                                <div>@Html.LabelFor(e => e.LastName)</div>
+                                <div>@Html.TextBoxFor(e => e.LastName, new {@class ="form-control"})</div>                    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>@Html.LabelFor(e => e.DoB)</div>
+                                <div>@Html.TextBoxFor(e => e.DoB, new {@class="form-control", Type="date"})</div>
+                            </div>
+                            <div class="col">
+                                <div>@Html.LabelFor(e => e.Address)</div>
+                                <div>@Html.TextBoxFor(e => e.Address, new {@class="form-control"})</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>@Html.LabelFor(e => e.Email)</div>
+                                <div>@Html.TextBoxFor(e => e.Email, new {@class="form-control"})</div>
+                            </div>
+                            <div class="col">
+                                <div>@Html.LabelFor(e => e.Password)</div>
+                                <div>@Html.TextBoxFor(e => e.Password, new {@class="form-control", Type="Password"})</div>
+                            </div>                            
+                        </div>
+                        <br/>
+                        <div class="row text-center">
+                            <div class="col-lg-12">
+                                <input type="submit" value="Register" class="btn btn-primary" />                            
+                            </div>                            
+                        </div>
+                    </div>                                                                 
+                </div>            
+            </div>        
+        <div class="row">
+            <!--Show details are saved successfully message-->
+            <div class="col-lg-12">@ViewBag.Message</div>
+        </div>
+    }
+</div>

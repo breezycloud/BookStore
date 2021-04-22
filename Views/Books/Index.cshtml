@@ -1,0 +1,42 @@
+﻿@model IEnumerable<BookStore.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<form asp-controller="Books" asp-action="Index" method="GET">
+    <p>
+        Title: <input type="text" name="id" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<div class="row">
+    @foreach (var item in Model) 
+    { 
+        <div class="card mb-3" style="width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="book.png" width="200" height="200"/>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Genre)</h5>
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                        <strong><p class="card-text">By @Html.DisplayFor(modelItem => item.Author) </p></strong>
+                        <br>
+                        <a asp-action="Details" asp-route-id="@item.Id">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* <div class="card col-sm-4" style="width: 15rem;">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>                
+            </div>
+            <div class="card-footer bg-transparent">
+                <a asp-action="Details" asp-route-id="@item.Id">View Details</a>
+            </div>
+        </div>     *@
+    }
+</div>
