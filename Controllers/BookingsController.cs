@@ -99,11 +99,6 @@ namespace BookStore.Controllers
         [HttpPost]        
         public async Task<IActionResult> AddCart(Guid Id)
         {
-            var bookExist = await _context.Bookings.Where(b => b.Bookid == Id).FirstOrDefaultAsync();
-            if (bookExist != null)
-            {                
-                return RedirectToAction(nameof(Cart));
-            }
             Booking model = new()
             {
                 Id = Guid.NewGuid(),
@@ -111,6 +106,18 @@ namespace BookStore.Controllers
                 Bookid = Id,                
                 Status = BookStatus.Unchecked.ToString()
             };
+            var bookExist = await _context.Bookings.Where(b => b.Bookid == Id).AsNoTracking().FirstOrDefaultAsync();
+            if (bookExist.Status == BookStatus.Unchecked.ToString() ||
+                bookExist.Status == BookStatus.Rented.ToString())
+                return RedirectToAction(nameof(Cart));
+            if (bookExist.Status == BookStatus.Returned.ToString())
+            {
+                model.Id = bookExist.Id;
+                _context.Update(model);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Cart));
+            }
+            
             if (ModelState.IsValid)
             {                
                 _context.Add(model);
@@ -151,22 +158,15 @@ namespace BookStore.Controllers
         {
             var userID = GetGuid();
             var itemStatus = BookStatus.Unchecked.ToString();
-            var items = await _context.Bookings.Where(u => u.Userid == userID && u.Status == itemStatus)
+            var items = await _context.Bookings.Where(u => u.Userid == userID 
+                                                && u.Status == itemStatus)
                                                .Include(b => b.Book)
                                                .AsNoTracking()
                                                .ToListAsync();
 
             foreach (var item in items)
             {
-                Booking booking = new()
-                {
-                    Id = item.Id,
-                    Bookid = item.Bookid,
-                    Userid = item.Userid,
-                    Status = BookStatus.Rented.ToString(),
-                    DateBooked = DateTime.Now.Date
-                };
-
+                var booking = GetBooking(item);
                 try
                 {
                     _context.Update(booking);
@@ -187,6 +187,19 @@ namespace BookStore.Controllers
             return RedirectToAction("Order");
         }
 
+        private Booking GetBooking(Booking item)
+        {
+            Booking booking = new()
+            {
+                Id = item.Id,
+                Bookid = item.Bookid,
+                Userid = item.Userid,
+                Status = BookStatus.Rented.ToString(),
+                DateBooked = DateTime.Now.Date,
+                DateReturned = null
+            };
+            return booking;
+        }
         [HttpGet]
         public async Task<IActionResult> ReturnBook(Guid Id)
         {
